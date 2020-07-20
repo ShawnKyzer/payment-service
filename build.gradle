@@ -13,6 +13,11 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '6.0.0'
 }
 
+project.ext {
+    dropwizardVersion = '2.0.10'
+    dropwizardKafkaVersion = '1.6.0'
+}
+
 version '1.0-SNAPSHOT'
 group 'com.automationrhapsody.reststub'
 description 'Sample Dropwizard REST Stub'
@@ -33,7 +38,8 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
-    compile group: 'io.dropwizard', name: 'dropwizard-core', version: '2.0.11'
+    compile group: 'io.dropwizard', name: 'dropwizard-core', version: "${dropwizardVersion}"
+    compile "io.dropwizard.modules:dropwizard-kafka:${dropwizardKafkaVersion}"
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
@@ -45,7 +51,7 @@ run {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'technical.test.payment.service.App'
+    mainClassName = 'com.technicaltest.payment.service.PurchaseOrderConsumerApplication'
 }
 
 shadowJar {
@@ -61,6 +67,6 @@ shadowJar {
         attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
         attributes 'Main-Class': mainClassName
     }
-    archiveName 'sample-dropwizard-rest-stub.jar'
+    archiveName 'technical-test-payment-service.jar'
 }
 

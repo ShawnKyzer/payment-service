@@ -1,0 +1,17 @@
+consumer:
+  type: basic
+  bootstrapServers:
+    - 127.0.0.1:29092
+    - 127.0.0.1:29093
+    - 127.0.0.1:29094
+  consumerGroupId: consumer12
+  name: consumerNameToBeUsedInMetrics
+  keyDeserializer:
+    type: string
+  valueDeserializer:
+    type: string
+#  security:
+#    securityProtocol: sasl_ssl
+#    sslProtocol: TLSv1.2
+#    saslMechanism: PLAIN
+#    saslJaas: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"<username>\" password=\"<password>\";"
