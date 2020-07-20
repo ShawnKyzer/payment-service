@@ -1,7 +1,7 @@
 package com.technicaltest.payment.service;
 
-import com.technicaltest.payment.service.health.PurchaseOrderConsumerHealthcheck;
 import io.dropwizard.Application;
+import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.kafka.KafkaConsumerBundle;
 import io.dropwizard.kafka.KafkaConsumerFactory;
 import io.dropwizard.setup.Bootstrap;
@@ -9,6 +9,7 @@ import io.dropwizard.setup.Environment;
 import lombok.AllArgsConstructor;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.common.TopicPartition;
+import org.jdbi.v3.core.Jdbi;
 
 import javax.inject.Inject;
 import java.util.Collection;
@@ -48,7 +49,17 @@ public class PurchaseOrderConsumerApplication extends Application<PurchaseOrderC
 
     @Override
     public void run(PurchaseOrderConsumerConfiguration config, Environment environment) {
-        PurchaseOrderEventConsumer purchaseOrderEventConsumer = new PurchaseOrderEventConsumer(true, kafkaConsumer.getConsumer());
+        final JdbiFactory factory = new JdbiFactory();
+        final Jdbi jdbi = factory.build(
+                environment,
+                config.getDataSourceFactory()
+                , "postgresql");
+
+
+        PurchaseOrderEventConsumer purchaseOrderEventConsumer = new PurchaseOrderEventConsumer(
+                true,
+                kafkaConsumer.getConsumer());
+
         purchaseOrderEventConsumer.startConsuming();
     }
 

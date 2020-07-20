@@ -2,6 +2,15 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.12'
+    }
+}
+
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'
@@ -17,17 +26,20 @@ project.ext {
     dropwizardVersion = '2.0.10'
     dropwizardKafkaVersion = '1.6.0'
     lombokVersion='1.18.6'
+    protocVersion='3.4.0'
+    grpcVersion='1.6.1'
 }
 
 version '1.0-SNAPSHOT'
-group 'com.automationrhapsody.reststub'
-description 'Sample Dropwizard REST Stub'
+group 'com.technicaltest.payment'
+description 'Technical Test Inc. Payment Service'
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'com.google.protobuf'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -41,11 +53,28 @@ dependencies {
     implementation 'com.google.guava:guava:29.0-jre'
     compile group: 'io.dropwizard', name: 'dropwizard-core', version: "${dropwizardVersion}"
     compile group: 'io.dropwizard.modules', name: 'dropwizard-health', version: '1.5.0'
+    compile group: 'io.dropwizard', name: 'dropwizard-jdbi3', version: "${dropwizardVersion}"
     compile "io.dropwizard.modules:dropwizard-kafka:${dropwizardKafkaVersion}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
+    compile 'com.google.protobuf:protobuf-javalite:3.8.0'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.8.0'
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option "lite"
+                }
+            }
+        }
+    }
 }
 
 run {

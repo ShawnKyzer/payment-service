@@ -2,6 +2,7 @@ package com.technicaltest.payment.service;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.kafka.KafkaConsumerFactory;
 import lombok.AllArgsConstructor;
 
@@ -22,6 +23,20 @@ public class PurchaseOrderConsumerConfiguration extends Configuration {
 
     public void setKafkaConsumerFactory(KafkaConsumerFactory kafkaConsumerFactory) {
         this.kafkaConsumerFactory = kafkaConsumerFactory;
+    }
+
+    @Valid
+    @NotNull
+    private DataSourceFactory database = new DataSourceFactory();
+
+    @JsonProperty("database")
+    public void setDataSourceFactory(DataSourceFactory factory) {
+        this.database = factory;
+    }
+
+    @JsonProperty("database")
+    public DataSourceFactory getDataSourceFactory() {
+        return database;
     }
 
 }

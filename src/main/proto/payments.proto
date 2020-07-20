@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package payments;
+
+option java_package = "com.technicaltest.payment.service";
+option java_outer_classname = "Payment";
+
+message Transaction {
+  required string name = 1;
+  required int32 id = 2;
+  optional string email = 3;
+}
