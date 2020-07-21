@@ -1,5 +1,6 @@
 package com.technicaltest.payment.service;
 
+import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.json.simple.parser.ParseException;
@@ -33,7 +34,7 @@ public class PurchaseOrderEventConsumerTest {
         Consumer<String,String> mockedConsumer = mock(Consumer.class);
         boolean isKafkaAvailable = true;
         PurchaseOrderEventConsumer underTest =
-                new PurchaseOrderEventConsumer(isKafkaAvailable, mockedConsumer);
+                new PurchaseOrderEventConsumer(isKafkaAvailable, mockedConsumer, mock(DatabaseWriter.class));
 
         String messageValue = "{\"payment_id\": \"20680a5d-2f0e-4d8d-9910-bd8a455c2df7\", " +
                 "\"account_id\": 468, " +

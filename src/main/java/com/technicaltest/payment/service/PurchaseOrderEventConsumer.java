@@ -1,5 +1,6 @@
 package com.technicaltest.payment.service;
 
+import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Optional;
 
 @Slf4j
 @Singleton
@@ -29,10 +31,11 @@ public class PurchaseOrderEventConsumer {
 
     Consumer<String, String> currentConsumer;
 
+    DatabaseWriter databaseWriter;
+
     public void startConsuming() {
         Duration duration = Duration.ofSeconds(1);
         try {
-
             currentConsumer.subscribe(Collections.singleton("offline"));
             while (true) {
                 currentConsumer.poll(duration).forEach(message -> {
@@ -41,8 +44,9 @@ public class PurchaseOrderEventConsumer {
                                 // and continuing to process
                                 Payment curPayment = convertToPayment(message.value());
                                 logger.info("Payment Proto Message: " + curPayment.toString());
+                                databaseWriter.writePaymentToDatabase(curPayment);
                             } catch (ParseException e) {
-                                logger.error(e.toString());
+                                logger.error("Parsing Exception for Message Value",message.toString());
                             }
                         }
                 );
@@ -65,7 +69,7 @@ public class PurchaseOrderEventConsumer {
         Payment convertedPayment = Payment.newBuilder()
                 .setPaymentId((String) json.get("payment_id"))
                 .setAccountId(((Long) json.get("account_id")).intValue())
-                .setCreditCard(json.get("credit_card").toString())
+                .setCreditCard(Optional.ofNullable(json.get("credit_card").toString()).orElse(""))
                 .setPaymentType(json.get("payment_type").toString())
                 .setAmount(((Long) json.get("amount")).intValue())
                 .setDelay(((Long) json.get("delay")).intValue())
