@@ -45,8 +45,8 @@ public class PurchaseOrderEventConsumer {
                                 Payment curPayment = convertToPayment(message.value());
                                 logger.info("Payment Proto Message: " + curPayment.toString());
                                 databaseWriter.writePaymentToDatabase(curPayment);
-                            } catch (ParseException e) {
-                                logger.error("Parsing Exception for Message Value",message.toString());
+                            } catch (Exception e) {
+                                logger.error("Failed to write message to database",message.toString());
                             }
                         }
                 );

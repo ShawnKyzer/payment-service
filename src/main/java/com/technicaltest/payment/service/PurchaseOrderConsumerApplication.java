@@ -56,12 +56,15 @@ public class PurchaseOrderConsumerApplication extends Application<PurchaseOrderC
                 environment,
                 config.getDataSourceFactory()
                 , "postgresql");
-        final DatabaseWriter databaseWriter = new DatabaseWriter(jdbi);
+        DatabaseWriter databaseWriter = new DatabaseWriter(jdbi);
+
+        // This allows for all of the out of the box goodies
+        environment.jersey().register(databaseWriter);
 
         PurchaseOrderEventConsumer purchaseOrderEventConsumer = new PurchaseOrderEventConsumer(
                 true,
-                kafkaConsumer.getConsumer(),
-                databaseWriter);
+                kafkaConsumer.getConsumer()
+                ,databaseWriter);
 
         purchaseOrderEventConsumer.startConsuming();
     }

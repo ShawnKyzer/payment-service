@@ -12,6 +12,6 @@ public interface PaymentsDAO {
             "credit_card, " +
             "amount, " +
             "created_on) values " +
-            "(:paymentId_, :accountId_, :paymentType_, :creditCard_, :amount_)")
+            "(:paymentId, :accountId, :paymentType, :creditCard, :amount, now())")
     void insert(@BindBean Payment payment);
 }
