@@ -28,9 +28,10 @@ public class PurchaseOrderEventConsumer {
     public void startConsuming() {
         Duration duration = Duration.ofSeconds(1);
         try {
+
             currentConsumer.subscribe(Collections.singleton("offline"));
             while (true) {
-                currentConsumer.poll(duration).forEach(message -> {
+                        currentConsumer.poll(duration).forEach(message -> {
                             logger.info("Message: " + message.toString());
                         }
                 );

@@ -62,6 +62,17 @@ dependencies {
     compile 'com.google.protobuf:protobuf-javalite:3.8.0'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['build/generated/source/proto/main/java','src']    // Include generated gRPC protobuf classes
+        }
+        proto {
+            srcDirs 'proto/'                                    // Protobuf definitions for services exposed
+        }
+    }
+}
+
 protobuf {
     protoc {
         artifact = 'com.google.protobuf:protoc:3.8.0'

@@ -13,3 +13,4 @@ _Some notes or explaination of your solution..._
 ### :pushpin: Things to improve
 
 _If u have more time or want to improve somthing..._
+1. I would change the producer to use protobuf directly so that the deserialization will be easier and also more compact as a byte[]
