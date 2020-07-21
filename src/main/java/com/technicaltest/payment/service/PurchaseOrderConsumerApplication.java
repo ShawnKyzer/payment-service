@@ -1,7 +1,6 @@
 package com.technicaltest.payment.service;
 
 import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
-import com.technicaltest.payment.service.jdbi3.dao.PaymentsDAO;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.kafka.KafkaConsumerBundle;
