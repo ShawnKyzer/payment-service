@@ -55,11 +55,12 @@ dependencies {
     compile group: 'io.dropwizard.modules', name: 'dropwizard-health', version: '1.5.0'
     compile group: 'io.dropwizard', name: 'dropwizard-jdbi3', version: "${dropwizardVersion}"
     compile "io.dropwizard.modules:dropwizard-kafka:${dropwizardKafkaVersion}"
+    compile 'com.google.protobuf:protobuf-javalite:3.8.0'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
-    compile 'com.google.protobuf:protobuf-javalite:3.8.0'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '3.4.4'
 }
 
 sourceSets {
