@@ -63,7 +63,7 @@ public class PurchaseOrderConsumerApplication extends Application<PurchaseOrderC
         PurchaseOrderEventConsumer purchaseOrderEventConsumer = new PurchaseOrderEventConsumer(
                 true,
                 kafkaConsumer.getConsumer()
-                ,databaseWriter);
+                , databaseWriter);
 
         purchaseOrderEventConsumer.startConsuming();
     }

@@ -46,7 +46,7 @@ public class PurchaseOrderEventConsumer {
                                 logger.info("Payment Proto Message: " + curPayment.toString());
                                 databaseWriter.writePaymentToDatabase(curPayment);
                             } catch (Exception e) {
-                                logger.error("Failed to write message to database",message.toString());
+                                logger.error("Failed to write message to database", message.toString());
                             }
                         }
                 );
