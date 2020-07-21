@@ -2,6 +2,7 @@ package com.technicaltest.payment.service;
 
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import org.apache.kafka.clients.consumer.Consumer;
+import org.json.simple.parser.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class PurchaseOrderEventConsumerTest {
     }
 
     @Test
-    public void convertToPayment() {
+    public void convertToPayment() throws ParseException {
         Consumer<String,String> mockedConsumer = mock(Consumer.class);
         boolean isKafkaAvailable = true;
         PurchaseOrderEventConsumer underTest =
