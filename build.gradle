@@ -65,9 +65,9 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDirs = ['build/generated/source/proto/main/java','src']    // Include generated gRPC protobuf classes
+            srcDirs = ['src/main/java','build/generated/source/proto/main/java']    // Include generated gRPC protobuf classes
         }
-        proto {
+        proto {s
             srcDirs 'proto/'                                    // Protobuf definitions for services exposed
         }
     }
