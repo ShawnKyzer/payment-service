@@ -1,5 +1,6 @@
 package com.technicaltest.payment.service;
 
+import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -45,5 +46,9 @@ public class PurchaseOrderEventConsumer {
 
     public boolean isKafkaAvailable() {
         return kafkaAvailable;
+    }
+
+    public Payment convertToPayment(String messageValue){
+        return Payment.newBuilder().build();
     }
 }
