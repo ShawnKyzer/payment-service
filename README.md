@@ -25,7 +25,7 @@ Note: Don't forget to update your config (delivery/TechnicalTestPaymentService/b
 
 sh build-publish-docker-start.sh
 
-####: Troubleshooting
+#### Troubleshooting
 
 From time to time it may be necessary to do a docker-compose down in the delivery directory to clear all the images and running containers. Every now and then it will default to localhost in the docker-compose and this seems to resolve it.
 
