@@ -23,7 +23,12 @@ public class PaymentValidator {
 
     public boolean isPaymentValid(Payment paymentToValidate) throws IOException {
 
-        HttpPost httpPost = new HttpPost("http://localhost:9000/payment");
+        String paymentValidationHost = System.getenv("PAYMENTHOST");
+        if (paymentValidationHost == null){
+            paymentValidationHost = "http://localhost:9000/payment";
+        }
+
+        HttpPost httpPost = new HttpPost(paymentValidationHost);
 
         JSONObject payload = new JSONObject();
         payload.put("payment_id",paymentToValidate.getPaymentId());

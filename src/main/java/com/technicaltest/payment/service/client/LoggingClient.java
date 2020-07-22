@@ -23,7 +23,12 @@ public class LoggingClient {
 
     public void logError(Payment payment, String errorType, String errorDescription) throws IOException {
 
-        HttpPost httpPost = new HttpPost("http://localhost:9000/log");
+        String logErrorHostURL = System.getenv("LOGHOST");
+        if (logErrorHostURL == null){
+            logErrorHostURL = "http://localhost:9000/log";
+        }
+
+        HttpPost httpPost = new HttpPost(logErrorHostURL);
 
         JSONObject payload = new JSONObject();
         payload.put("payment_id", payment.getPaymentId());
