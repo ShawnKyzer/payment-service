@@ -1,12 +1,25 @@
 # technical-test-payment-service
-A service consumer designed to stream data from kafka topics to postgres database for persistence. It handles both online and offline payments. 
+A service consumer designed to stream data from kafka topics to postgres database for persistence. It handles both online and offline payments validating where necessary and provides detailed error logs when there are failures.
 
 ### :computer: How to execute
 
-Running with existing build inside docker:
 
-./start-docker.sh
+#### Running with existing build inside docker:
 
+`sh start-docker.sh`
+
+#### Run as a new build:
+If you would like to run on local as a new build use gradle:
+
+`gradle clean build run`
+
+or
+
+`./graldew clean build run`
+
+Note: You may want to test as well and if so execute the previous command first then run the clean build.
+
+#### Create a new build and run in docker-compose environment
 
 
 ### :memo: Design Notes and Diagrams
