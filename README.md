@@ -7,14 +7,13 @@ A service consumer designed to stream data from kafka topics to postgres databas
 
 ### :memo: Design Notes and Diagrams
 
-The service in the system is designed such that is can be scaled to n given enough database connection for the incoming kafka streams.
-It is fully configurable from the config.yml files for all of the components loaded at runtime.
+The service in the system is designed such that is can be scaled to n given enough database connections for the incoming kafka streams. It is fully configurable from the config.yml files for all of the components loaded at runtime.
 
 Below is the proposed high level architecture:
-![Pipeline Diagram](diagrams/Diagram_Proposed_Architecture.png)
+![Pipeline Diagram](diagrams/System_Architecture_Technical_Test_Payment_System.png)
 
 This is the general sequence of events representing the transactional data flow of the payments.
-![Pipeline Diagram](diagrams/System_Architecture_Technical_Test_Payment_System.png)
+![Pipeline Diagram](diagrams/technical-test-payment-service flow.png)
 
 ### :pushpin: Things to improve
 - Change the producer to use protobuf directly as binary to kafka so that the deserialization will be easier and also more compact
