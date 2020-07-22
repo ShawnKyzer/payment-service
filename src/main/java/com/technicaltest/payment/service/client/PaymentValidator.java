@@ -17,18 +17,20 @@ import java.io.IOException;
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Inject))
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class LoggingClient {
+public class PaymentValidator {
 
     HttpClient httpClient;
 
-    public void logError(Payment payment, String errorType, String errorDescription) throws IOException {
+    public boolean isPaymentValid(Payment paymentToValidate) throws IOException {
 
-        HttpPost httpPost = new HttpPost("http://localhost:9000/log");
+        HttpPost httpPost = new HttpPost("http://localhost:9000/payment");
 
         JSONObject payload = new JSONObject();
-        payload.put("payment_id", payment.getPaymentId());
-        payload.put("error_type",errorType);
-        payload.put("error_description",errorDescription);
+        payload.put("payment_id",paymentToValidate.getPaymentId());
+        payload.put("account_id",paymentToValidate.getAccountId());
+        payload.put("payment_type",paymentToValidate.getPaymentType());
+        payload.put("credit_card",paymentToValidate.getCreditCard());
+        payload.put("amount",paymentToValidate.getAmount());
 
         String json = payload.toString();
         StringEntity entity = new StringEntity(json);
@@ -37,8 +39,13 @@ public class LoggingClient {
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
 
-        // Note that we have the drop wizard config to determine the retries behind the scene
         HttpResponse response = httpClient.execute(httpPost);
+
+        if (response.getStatusLine().getStatusCode() == 200) {
+            return true;
+        }
+
+        return false;
     }
 
 }

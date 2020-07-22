@@ -1,6 +1,7 @@
 package com.technicaltest.payment.service.processor;
 
 import com.technicaltest.payment.service.client.LoggingClient;
+import com.technicaltest.payment.service.client.PaymentValidator;
 import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.io.IOException;
 
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Inject))
@@ -21,11 +23,14 @@ public class PaymentsProcessor {
 
     DatabaseWriter databaseWriter;
 
-    final LoggingClient loggingClient = new LoggingClient();
+    PaymentValidator paymentValidator;
 
-    public void processOnlinePayment(Payment onlinePayment){
+    public void processOnlinePayment(Payment onlinePayment) throws IOException {
         logger.info("Online Payment: " + onlinePayment.toString());
-        databaseWriter.writePaymentToDatabase(onlinePayment);
+        if (paymentValidator.isPaymentValid(onlinePayment)){
+            logger.info("Valid online payment");
+            databaseWriter.writePaymentToDatabase(onlinePayment);
+        }
     }
 
     public void processOfflinePayment(Payment offlinePayment){

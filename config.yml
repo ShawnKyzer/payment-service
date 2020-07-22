@@ -39,3 +39,13 @@ database:
   evictionInterval: 10s
   # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
   minIdleTime: 1 minute
+httpClient:
+  timeout: 500ms
+  connectionTimeout: 500ms
+  timeToLive: 1h
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0ms
+  retries: 1
+  userAgent: technical-test-payment-service

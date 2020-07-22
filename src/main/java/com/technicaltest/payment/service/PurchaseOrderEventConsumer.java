@@ -1,5 +1,6 @@
 package com.technicaltest.payment.service;
 
+import com.technicaltest.payment.service.client.LoggingClient;
 import com.technicaltest.payment.service.processor.PaymentsProcessor;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
@@ -33,23 +35,38 @@ public class PurchaseOrderEventConsumer {
 
     PaymentsProcessor paymentsProcessor;
 
+    LoggingClient loggingClient;
+
     public void startConsuming() {
         Duration duration = Duration.ofSeconds(1);
         try {
             currentConsumer.subscribe(Arrays.asList("offline", "online"));
             while (true) {
                 currentConsumer.poll(duration).forEach(message -> {
+                            Payment curPayment = Payment.newBuilder().build();
                             try {
                                 // Adding the try catch here to avoid exiting loops
                                 // and continuing to process
-                                Payment curPayment = convertToPayment(message.value());
-                                if (curPayment.getPaymentType().equals("offline")){
+                                curPayment = convertToPayment(message.value());
+                                if (curPayment.getPaymentType().equals("offline")) {
                                     paymentsProcessor.processOfflinePayment(curPayment);
-                                } else if (curPayment.getPaymentType().equals("online")){
+                                } else if (curPayment.getPaymentType().equals("online")) {
                                     paymentsProcessor.processOnlinePayment(curPayment);
                                 }
                             } catch (Exception e) {
-                                logger.error("Failed to write message to database", message.toString());
+                                // For the sake of logging to the web service
+                                // I have used a generic exception and allowed all other
+                                // exceptions to bubble up so there's only one place the
+                                // errors are logged to the http client
+                                logger.error("Failed to process payment", message.toString());
+                                try {
+                                    loggingClient.logError(curPayment, "Payment Processor", e.getMessage());
+                                } catch (IOException ioException) {
+                                    // Worst case preserve the kafka message
+                                    // Although we want to be sure that the logs exclude
+                                    // PII etc.
+                                    logger.error("Failure to log error on kafka message: " + message.value());
+                                }
                             }
                         }
                 );

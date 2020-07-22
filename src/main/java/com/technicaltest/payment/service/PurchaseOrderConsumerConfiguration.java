@@ -2,6 +2,7 @@ package com.technicaltest.payment.service;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.client.HttpClientConfiguration;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.kafka.KafkaConsumerFactory;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,20 @@ public class PurchaseOrderConsumerConfiguration extends Configuration {
     @JsonProperty("database")
     public DataSourceFactory getDataSourceFactory() {
         return database;
+    }
+
+    @Valid
+    @NotNull
+    private HttpClientConfiguration httpClient = new HttpClientConfiguration();
+
+    @JsonProperty("httpClient")
+    public HttpClientConfiguration getHttpClientConfiguration() {
+        return httpClient;
+    }
+
+    @JsonProperty("httpClient")
+    public void setHttpClientConfiguration(HttpClientConfiguration httpClient) {
+        this.httpClient = httpClient;
     }
 
 }
