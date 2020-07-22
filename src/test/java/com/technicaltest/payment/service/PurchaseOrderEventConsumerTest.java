@@ -1,5 +1,7 @@
 package com.technicaltest.payment.service;
 
+import com.technicaltest.payment.service.client.LoggingClient;
+import com.technicaltest.payment.service.client.PaymentValidator;
 import com.technicaltest.payment.service.processor.PaymentsProcessor;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -25,6 +28,8 @@ public class PurchaseOrderEventConsumerTest {
     PurchaseOrderEventConsumer underTest;
 
     PaymentsProcessor paymentsProcessor;
+    LoggingClient loggingClient;
+    PaymentValidator paymentValidator;
 
     @Captor
     ArgumentCaptor<Payment> paymentCaptor;
@@ -34,8 +39,9 @@ public class PurchaseOrderEventConsumerTest {
         paymentCaptor = ArgumentCaptor.forClass(Payment.class);
         consumer = new MockConsumer<>(OffsetResetStrategy.EARLIEST);
         paymentsProcessor = mock(PaymentsProcessor.class);
+        loggingClient = mock(LoggingClient.class);
         underTest =
-                new PurchaseOrderEventConsumer(true, consumer, paymentsProcessor);
+                new PurchaseOrderEventConsumer(true, consumer, paymentsProcessor,loggingClient);
     }
 
     @AfterEach
@@ -99,7 +105,7 @@ public class PurchaseOrderEventConsumerTest {
     }
 
     @Test
-    public void givenPaymentEventWhenTransactionOnlineWriteToDatabase() {
+    public void givenPaymentEventWhenTransactionOnlineWriteToDatabase() throws IOException {
 
         String messageValue = "{\"payment_id\": \"20680a5d-2f0e-4d8d-9910-bd8a455c2df7\", " +
                 "\"account_id\": 468, " +
