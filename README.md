@@ -13,5 +13,6 @@ _Some notes or explaination of your solution..._
 - I would change the producer to use protobuf directly so that the deserialization will be easier and also more compact as a byte[]
 - Would add in SonarQube, Jacoco, Snyke and google checkstyle as part of the final build CI/CD process
 - More unit testing for the kafka stream
-- Update the producer, and all protos to store the currency as micro and add in currency type so as not to lose monetary precision and preserve the currency unit
+- Update the producer, and all protos and schema to store the currency as micro and add in currency type so as not to lose monetary precision and preserve the currency unit
+- Update the producer, protos and schemas to add a credit card type to go with the cc number
 - Add in integration tests using testcontainers for kafka etc

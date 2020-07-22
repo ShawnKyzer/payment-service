@@ -1,5 +1,6 @@
 package com.technicaltest.payment.service.jdbi3;
 
+import com.technicaltest.payment.service.jdbi3.dao.AccountsDAO;
 import com.technicaltest.payment.service.jdbi3.dao.PaymentsDAO;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
@@ -21,8 +22,11 @@ public class DatabaseWriter {
     Jdbi jdbi;
 
     public void writePaymentToDatabase(Payment paymentToWrite){
-        PaymentsDAO dao = jdbi.onDemand(PaymentsDAO.class);
-        dao.insert(paymentToWrite);
+        PaymentsDAO paymentsDAOao = jdbi.onDemand(PaymentsDAO.class);
+        paymentsDAOao.insert(paymentToWrite);
+
+        AccountsDAO accountsDAO = jdbi.onDemand(AccountsDAO.class);
+        accountsDAO.updateLastPaymentDate(paymentToWrite.getPaymentId());
     }
 
 }

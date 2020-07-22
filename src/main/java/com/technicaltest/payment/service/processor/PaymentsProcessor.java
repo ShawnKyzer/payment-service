@@ -1,5 +1,6 @@
 package com.technicaltest.payment.service.processor;
 
+import com.technicaltest.payment.service.client.LoggingClient;
 import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
@@ -19,6 +20,8 @@ public class PaymentsProcessor {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     DatabaseWriter databaseWriter;
+
+    final LoggingClient loggingClient = new LoggingClient();
 
     public void processOnlinePayment(Payment onlinePayment){
         logger.info("Online Payment: " + onlinePayment.toString());
