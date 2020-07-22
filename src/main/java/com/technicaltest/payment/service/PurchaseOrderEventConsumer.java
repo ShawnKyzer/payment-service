@@ -1,6 +1,6 @@
 package com.technicaltest.payment.service;
 
-import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
+import com.technicaltest.payment.service.processor.PaymentsProcessor;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -31,20 +31,23 @@ public class PurchaseOrderEventConsumer {
 
     Consumer<String, String> currentConsumer;
 
-    DatabaseWriter databaseWriter;
+    PaymentsProcessor paymentsProcessor;
 
     public void startConsuming() {
         Duration duration = Duration.ofSeconds(1);
         try {
-            currentConsumer.subscribe(Arrays.asList("offline","online"));
+            currentConsumer.subscribe(Arrays.asList("offline", "online"));
             while (true) {
                 currentConsumer.poll(duration).forEach(message -> {
                             try {
                                 // Adding the try catch here to avoid exiting loops
                                 // and continuing to process
                                 Payment curPayment = convertToPayment(message.value());
-                                logger.info("Payment Proto Message: " + curPayment.toString());
-                                databaseWriter.writePaymentToDatabase(curPayment);
+                                if (curPayment.getPaymentType().equals("offline")){
+                                    paymentsProcessor.processOfflinePayment(curPayment);
+                                } else if (curPayment.getPaymentType().equals("online")){
+                                    paymentsProcessor.processOnlinePayment(curPayment);
+                                }
                             } catch (Exception e) {
                                 logger.error("Failed to write message to database", message.toString());
                             }

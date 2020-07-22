@@ -1,6 +1,7 @@
 package com.technicaltest.payment.service;
 
 import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
+import com.technicaltest.payment.service.processor.PaymentsProcessor;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
 import io.dropwizard.kafka.KafkaConsumerBundle;
@@ -56,6 +57,7 @@ public class PurchaseOrderConsumerApplication extends Application<PurchaseOrderC
                 config.getDataSourceFactory()
                 , "postgresql");
         DatabaseWriter databaseWriter = new DatabaseWriter(jdbi);
+        PaymentsProcessor paymentsProcessor = new PaymentsProcessor(databaseWriter);
 
         // This allows for all of the out of the box goodies
         environment.jersey().register(databaseWriter);
@@ -63,7 +65,7 @@ public class PurchaseOrderConsumerApplication extends Application<PurchaseOrderC
         PurchaseOrderEventConsumer purchaseOrderEventConsumer = new PurchaseOrderEventConsumer(
                 true,
                 kafkaConsumer.getConsumer()
-                , databaseWriter);
+                , paymentsProcessor);
 
         purchaseOrderEventConsumer.startConsuming();
     }

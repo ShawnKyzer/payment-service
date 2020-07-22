@@ -1,6 +1,6 @@
 package com.technicaltest.payment.service;
 
-import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
+import com.technicaltest.payment.service.processor.PaymentsProcessor;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.MockConsumer;
@@ -24,7 +24,7 @@ public class PurchaseOrderEventConsumerTest {
 
     PurchaseOrderEventConsumer underTest;
 
-    DatabaseWriter dbWriter;
+    PaymentsProcessor paymentsProcessor;
 
     @Captor
     ArgumentCaptor<Payment> paymentCaptor;
@@ -33,9 +33,9 @@ public class PurchaseOrderEventConsumerTest {
     void setUp() {
         paymentCaptor = ArgumentCaptor.forClass(Payment.class);
         consumer = new MockConsumer<>(OffsetResetStrategy.EARLIEST);
-        dbWriter = mock(DatabaseWriter.class);
+        paymentsProcessor = mock(PaymentsProcessor.class);
         underTest =
-                new PurchaseOrderEventConsumer(true, consumer, dbWriter);
+                new PurchaseOrderEventConsumer(true, consumer, paymentsProcessor);
     }
 
     @AfterEach
@@ -92,7 +92,62 @@ public class PurchaseOrderEventConsumerTest {
 
         underTest.startConsuming();
 
-        verify(dbWriter).writePaymentToDatabase(paymentCaptor.capture());
+        verify(paymentsProcessor).processOfflinePayment(paymentCaptor.capture());
+        assertEquals(expected, paymentCaptor.getValue());
+        assertEquals(true, consumer.closed());
+
+    }
+
+    @Test
+    public void givenPaymentEventWhenTransactionOnlineWriteToDatabase() {
+
+        String messageValue = "{\"payment_id\": \"20680a5d-2f0e-4d8d-9910-bd8a455c2df7\", " +
+                "\"account_id\": 468, " +
+                "\"payment_type\":\"online\", " +
+                "\"credit_card\": \"amex\", " +
+                "\"amount\": 32, " +
+                "\"delay\": 221}";
+
+        Payment expected = Payment.newBuilder()
+                .setPaymentId("20680a5d-2f0e-4d8d-9910-bd8a455c2df7")
+                .setAccountId(468)
+                .setCreditCard("amex")
+                .setPaymentType("online")
+                .setAmount(32)
+                .setDelay(221)
+                .build();
+
+        String topic = "online";
+
+        Collection<TopicPartition> partitions = new ArrayList<TopicPartition>();
+        Collection<String> topicsCollection = new ArrayList<String>();
+        partitions.add(new TopicPartition(topic, 1));
+        Map<TopicPartition, Long> partitionsBeginningMap = new HashMap<TopicPartition, Long>();
+        Map<TopicPartition, Long> partitionsEndMap = new HashMap<TopicPartition, Long>();
+
+        long records = 10;
+        for (TopicPartition partition : partitions) {
+            partitionsBeginningMap.put(partition, 0l);
+            partitionsEndMap.put(partition, records);
+            topicsCollection.add(partition.topic());
+        }
+
+        consumer.subscribe(topicsCollection);
+        consumer.rebalance(partitions);
+        consumer.updateBeginningOffsets(partitionsBeginningMap);
+        consumer.updateEndOffsets(partitionsEndMap);
+
+        ConsumerRecord<String, String> record = new ConsumerRecord<String, String>(
+                topic, 1, 0, null, messageValue);
+
+        consumer.addRecord(record);
+
+        consumer.schedulePollTask(() -> consumer.addRecord(record));
+        consumer.schedulePollTask(() -> underTest.stop());
+
+        underTest.startConsuming();
+
+        verify(paymentsProcessor).processOnlinePayment(paymentCaptor.capture());
         assertEquals(expected, paymentCaptor.getValue());
         assertEquals(true, consumer.closed());
 
