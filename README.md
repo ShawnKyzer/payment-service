@@ -3,7 +3,6 @@ A service consumer designed to stream data from kafka topics to postgres databas
 
 ### :computer: How to execute
 
-
 #### Running with existing build inside docker:
 
 `sh start-docker.sh`
@@ -21,6 +20,14 @@ Note: You may want to test as well and if so execute the previous command first 
 
 #### Create a new build and run in docker-compose environment
 
+This will do a full rebuild for the application and for the docker-compose environment.
+Note: Don't forget to update your config (delivery/TechnicalTestPaymentService/bin/config_docker.yml)
+
+sh build-publish-docker-start.sh
+
+####: Troubleshooting
+
+From time to time it may be necessary to do a docker-compose down in the delivery directory to clear all the images and running containers. Every now and then it will default to localhost in the docker-compose and this seems to resolve it.
 
 ### :memo: Design Notes and Diagrams
 

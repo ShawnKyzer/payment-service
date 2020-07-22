@@ -19,8 +19,8 @@ services:
     networks:
       - kafka-net
     ports:
-      - '9092:9092'
-      - '29092:29092'
+     - '9092:9092'
+     - '29092:29092'
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper-server:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
