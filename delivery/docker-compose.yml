@@ -14,9 +14,10 @@ services:
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
   kafka-server:
+    hostname: kafka-server
     image: 'bitnami/kafka:latest'
     networks:
-      - kafka-net    
+      - kafka-net
     ports:
       - '9092:9092'
       - '29092:29092'
@@ -29,8 +30,9 @@ services:
     depends_on:
       - zookeeper-server
   postgress:
+    hostname: postgress
     image: postgres
-    ports: 
+    ports:
       -  '5432:5432'
     volumes:
       - ./Database/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
@@ -43,6 +45,7 @@ services:
       POSTGRES_PASSWORD: 'test'
       POSTGRES_DB: 'payments'
   api-producer:
+    hostname: api-producer
     build: ./ApiAndProducer
     ports:
       - "9000:8080"
@@ -54,3 +57,19 @@ services:
     depends_on:
       - postgress
       - kafka-server
+  technical-test-payment-service:
+    build: ./TechnicalTestPaymentService
+    ports:
+      - "9001:8080"
+    environment:
+      - LOGHOST=http://api-producer:8080/log
+      - PAYMENTHOST=http://api-producer:8080/payment
+    networks:
+      - kafka-net
+    volumes:
+      - ./TechnicalTestPaymentService/bin:/app/
+    command: ["java", "-jar", "technical-test-payment-service.jar","server","config_docker.yml"]
+    depends_on:
+      - postgress
+      - kafka-server
+      - api-producer

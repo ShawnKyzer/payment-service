@@ -1,0 +1,11 @@
+FROM openjdk:11
+
+ENV APPLICATION_USER java
+RUN adduser $APPLICATION_USER
+
+RUN mkdir /app
+RUN chown -R $APPLICATION_USER /app
+
+USER $APPLICATION_USER
+
+WORKDIR /app

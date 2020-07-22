@@ -1,0 +1,50 @@
+consumer:
+  type: basic
+  bootstrapServers:
+    - kafka-server:29092
+    - kafka-server:9092
+  consumerGroupId: consumer_ab
+  name: consumerNameToBeUsedInMetrics
+  keyDeserializer:
+    type: string
+  valueDeserializer:
+    type: string
+#  security:
+#    securityProtocol: sasl_ssl
+#    sslProtocol: TLSv1.2
+#    saslMechanism: PLAIN
+#    saslJaas: "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"<username>\" password=\"<password>\";"
+database:
+  driverClass: org.postgresql.Driver
+  user: tech
+  password: test
+  url: jdbc:postgresql://postgress:5432/payments
+  # any properties specific to your JDBC driver:
+  properties:
+    charSet: UTF-8
+  # the maximum amount of time to wait on an empty pool before throwing an exception
+  maxWaitForConnection: 1s
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "SELECT * FROM PAYMENTS LIMIT 1"
+  # the timeout before a connection validation queries fail
+  validationQueryTimeout: 3s
+  # the minimum number of connections to keep open
+  minSize: 8
+  # the maximum number of connections to keep open
+  maxSize: 32
+  # whether or not idle connections should be validated
+  checkConnectionWhileIdle: false
+  # the amount of time to sleep between runs of the idle connection validation, abandoned cleaner and idle pool resizing
+  evictionInterval: 10s
+  # the minimum amount of time an connection must sit idle in the pool before it is eligible for eviction
+  minIdleTime: 1 minute
+httpClient:
+  timeout: 500ms
+  connectionTimeout: 500ms
+  timeToLive: 1h
+  cookiesEnabled: false
+  maxConnections: 1024
+  maxConnectionsPerRoute: 1024
+  keepAlive: 0ms
+  retries: 1
+  userAgent: technical-test-payment-service
