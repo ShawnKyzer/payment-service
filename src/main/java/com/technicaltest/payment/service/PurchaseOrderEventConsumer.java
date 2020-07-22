@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.time.Duration;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Slf4j
@@ -36,7 +36,7 @@ public class PurchaseOrderEventConsumer {
     public void startConsuming() {
         Duration duration = Duration.ofSeconds(1);
         try {
-            currentConsumer.subscribe(Collections.singleton("offline"));
+            currentConsumer.subscribe(Arrays.asList("offline","online"));
             while (true) {
                 currentConsumer.poll(duration).forEach(message -> {
                             try {
@@ -55,6 +55,8 @@ public class PurchaseOrderEventConsumer {
         } catch (Exception exception) {
             logger.error("Failure to poll kafka:", exception);
             kafkaAvailable = false;
+        } finally {
+            currentConsumer.close();
         }
     }
 
@@ -76,5 +78,10 @@ public class PurchaseOrderEventConsumer {
                 .build();
 
         return convertedPayment;
+    }
+
+    public void stop() {
+        kafkaAvailable = false;
+        currentConsumer.wakeup();
     }
 }

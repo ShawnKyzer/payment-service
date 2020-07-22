@@ -63,8 +63,12 @@ dependencies {
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     // Use JUnit test framework
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.4.4'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 sourceSets {
