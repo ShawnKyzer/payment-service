@@ -3,6 +3,10 @@ A service consumer designed to stream data from kafka topics to postgres databas
 
 ### :computer: How to execute
 
+Running with existing build inside docker:
+
+./start-docker.sh
+
 
 
 ### :memo: Design Notes and Diagrams
@@ -13,7 +17,7 @@ Below is the proposed high level architecture:
 ![Pipeline Diagram](diagrams/System_Architecture_Technical_Test_Payment_System.png)
 
 This is the general sequence of events representing the transactional data flow of the payments.
-![Pipeline Diagram](diagrams/technical-test-payment-service flow.png)
+![Pipeline Diagram](diagrams/technical-test-payment-service-flow.png)
 
 ### :pushpin: Things to improve
 - Change the producer to use protobuf directly as binary to kafka so that the deserialization will be easier and also more compact
