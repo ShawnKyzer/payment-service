@@ -1,7 +1,6 @@
 consumer:
   type: basic
   bootstrapServers:
-    - kafka-server:29092
     - kafka-server:9092
   consumerGroupId: consumer_ab
   name: consumerNameToBeUsedInMetrics
