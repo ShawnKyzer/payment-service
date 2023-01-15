@@ -1,4 +1,4 @@
-# technical-test-payment-service
+# payment-service
 A service consumer designed to stream data from kafka topics to postgres database for persistence. It handles both online and offline payments validating where necessary and provides detailed error logs when there are failures.
 
 ### :computer: How to execute
