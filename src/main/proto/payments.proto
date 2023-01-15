@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package payments;
 
-option java_package = "com.technicaltest.payment.service.proto";
+option java_package = "com.payment.service.proto";
 
 message Payment {
    string payment_id = 1;

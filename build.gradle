@@ -31,8 +31,8 @@ project.ext {
 }
 
 version '1.0-SNAPSHOT'
-group 'com.technicaltest.payment'
-description 'Technical Test Inc. Payment Service'
+group 'com.payment'
+description 'Payment Service'
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -104,7 +104,7 @@ run {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'com.technicaltest.payment.service.PurchaseOrderConsumerApplication'
+    mainClassName = 'com.payment.service.PurchaseOrderConsumerApplication'
 }
 
 shadowJar {

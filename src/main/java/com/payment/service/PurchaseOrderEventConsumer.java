@@ -2,7 +2,7 @@ package com.payment.service;
 
 import com.payment.service.client.LoggingClient;
 import com.payment.service.processor.PaymentsProcessor;
-import com.technicaltest.payment.service.proto.Payments.Payment;
+import com.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;

@@ -3,7 +3,7 @@ package com.payment.service;
 import com.payment.service.client.LoggingClient;
 import com.payment.service.client.PaymentValidator;
 import com.payment.service.processor.PaymentsProcessor;
-import com.technicaltest.payment.service.proto.Payments.Payment;
+import com.payment.service.proto.Payments.Payment;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.MockConsumer;
 import org.apache.kafka.clients.consumer.OffsetResetStrategy;

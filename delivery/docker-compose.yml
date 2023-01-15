@@ -56,7 +56,7 @@ services:
     depends_on:
       - postgress
       - kafka-server
-  technical-test-payment-service:
+  payment-service:
     build: PaymentService
     ports:
       - "9001:8080"
@@ -66,7 +66,7 @@ services:
     networks:
       - kafka-net
     volumes:
-      - ./TechnicalTestPaymentService/bin:/app/
+      - ./PaymentService/bin:/app/
     command: ["./wait-for-it.sh","postgress:5432","kafka-server:9092","-t","100", "--","java", "-jar", "payment-service.jar","server","config_docker.yml"]
     depends_on:
       - postgress

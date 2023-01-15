@@ -21,7 +21,7 @@ Note: You may want to test as well and if so execute the previous command first 
 #### Create a new build and run in docker-compose environment
 
 This will do a full rebuild for the application and for the docker-compose environment.
-Note: Don't forget to update your config (delivery/TechnicalTestPaymentService/bin/config_docker.yml)
+Note: Don't forget to update your config (delivery/PaymentService/bin/config_docker.yml)
 
 sh build-publish-docker-start.sh
 

@@ -1,6 +1,6 @@
 package com.payment.service.jdbi3.dao;
 
-import com.technicaltest.payment.service.proto.Payments.Payment;
+import com.payment.service.proto.Payments.Payment;
 import org.jdbi.v3.sqlobject.customizer.BindBean;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 

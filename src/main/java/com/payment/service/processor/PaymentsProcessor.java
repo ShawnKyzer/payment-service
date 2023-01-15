@@ -2,7 +2,7 @@ package com.payment.service.processor;
 
 import com.payment.service.client.PaymentValidator;
 import com.payment.service.jdbi3.DatabaseWriter;
-import com.technicaltest.payment.service.proto.Payments.Payment;
+import com.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
