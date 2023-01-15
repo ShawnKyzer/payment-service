@@ -1,4 +1,4 @@
-package com.technicaltest.payment.service.client;
+package com.payment.service.client;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

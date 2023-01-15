@@ -120,6 +120,6 @@ shadowJar {
         attributes 'Created-By': 'Gradle ' + gradle.gradleVersion
         attributes 'Main-Class': mainClassName
     }
-    archiveName 'technical-test-payment-service.jar'
+    archiveName 'payment-service.jar'
 }
 

@@ -57,7 +57,7 @@ services:
       - postgress
       - kafka-server
   technical-test-payment-service:
-    build: ./TechnicalTestPaymentService
+    build: PaymentService
     ports:
       - "9001:8080"
     environment:
@@ -67,7 +67,7 @@ services:
       - kafka-net
     volumes:
       - ./TechnicalTestPaymentService/bin:/app/
-    command: ["./wait-for-it.sh","postgress:5432","kafka-server:9092","-t","100", "--","java", "-jar", "technical-test-payment-service.jar","server","config_docker.yml"]
+    command: ["./wait-for-it.sh","postgress:5432","kafka-server:9092","-t","100", "--","java", "-jar", "payment-service.jar","server","config_docker.yml"]
     depends_on:
       - postgress
       - kafka-server

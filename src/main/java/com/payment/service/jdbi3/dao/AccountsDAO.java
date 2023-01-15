@@ -1,4 +1,4 @@
-package com.technicaltest.payment.service.jdbi3.dao;
+package com.payment.service.jdbi3.dao;
 
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;

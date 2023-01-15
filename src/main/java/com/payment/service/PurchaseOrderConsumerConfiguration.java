@@ -1,4 +1,4 @@
-package com.technicaltest.payment.service;
+package com.payment.service;
 
 import io.dropwizard.Configuration;
 import com.fasterxml.jackson.annotation.JsonProperty;

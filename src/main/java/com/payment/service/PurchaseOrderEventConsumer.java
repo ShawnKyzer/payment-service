@@ -1,7 +1,7 @@
-package com.technicaltest.payment.service;
+package com.payment.service;
 
-import com.technicaltest.payment.service.client.LoggingClient;
-import com.technicaltest.payment.service.processor.PaymentsProcessor;
+import com.payment.service.client.LoggingClient;
+import com.payment.service.processor.PaymentsProcessor;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

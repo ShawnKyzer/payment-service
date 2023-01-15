@@ -1,9 +1,9 @@
-package com.technicaltest.payment.service;
+package com.payment.service;
 
-import com.technicaltest.payment.service.client.LoggingClient;
-import com.technicaltest.payment.service.client.PaymentValidator;
-import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
-import com.technicaltest.payment.service.processor.PaymentsProcessor;
+import com.payment.service.client.LoggingClient;
+import com.payment.service.client.PaymentValidator;
+import com.payment.service.jdbi3.DatabaseWriter;
+import com.payment.service.processor.PaymentsProcessor;
 import io.dropwizard.Application;
 import io.dropwizard.client.HttpClientBuilder;
 import io.dropwizard.jdbi3.JdbiFactory;

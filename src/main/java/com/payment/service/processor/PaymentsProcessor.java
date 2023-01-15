@@ -1,8 +1,7 @@
-package com.technicaltest.payment.service.processor;
+package com.payment.service.processor;
 
-import com.technicaltest.payment.service.client.LoggingClient;
-import com.technicaltest.payment.service.client.PaymentValidator;
-import com.technicaltest.payment.service.jdbi3.DatabaseWriter;
+import com.payment.service.client.PaymentValidator;
+import com.payment.service.jdbi3.DatabaseWriter;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

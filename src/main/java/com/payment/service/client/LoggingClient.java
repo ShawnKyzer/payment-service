@@ -1,4 +1,4 @@
-package com.technicaltest.payment.service.client;
+package com.payment.service.client;
 
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
@@ -17,25 +17,23 @@ import java.io.IOException;
 @Slf4j
 @AllArgsConstructor(onConstructor = @__(@Inject))
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentValidator {
+public class LoggingClient {
 
     HttpClient httpClient;
 
-    public boolean isPaymentValid(Payment paymentToValidate) throws IOException {
+    public void logError(Payment payment, String errorType, String errorDescription) throws IOException {
 
-        String paymentValidationHost = System.getenv("PAYMENTHOST");
-        if (paymentValidationHost == null){
-            paymentValidationHost = "http://localhost:9000/payment";
+        String logErrorHostURL = System.getenv("LOGHOST");
+        if (logErrorHostURL == null){
+            logErrorHostURL = "http://localhost:9000/log";
         }
 
-        HttpPost httpPost = new HttpPost(paymentValidationHost);
+        HttpPost httpPost = new HttpPost(logErrorHostURL);
 
         JSONObject payload = new JSONObject();
-        payload.put("payment_id",paymentToValidate.getPaymentId());
-        payload.put("account_id",paymentToValidate.getAccountId());
-        payload.put("payment_type",paymentToValidate.getPaymentType());
-        payload.put("credit_card",paymentToValidate.getCreditCard());
-        payload.put("amount",paymentToValidate.getAmount());
+        payload.put("payment_id", payment.getPaymentId());
+        payload.put("error_type",errorType);
+        payload.put("error_description",errorDescription);
 
         String json = payload.toString();
         StringEntity entity = new StringEntity(json);
@@ -44,13 +42,8 @@ public class PaymentValidator {
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-type", "application/json");
 
+        // Note that we have the drop wizard config to determine the retries behind the scene
         HttpResponse response = httpClient.execute(httpPost);
-
-        if (response.getStatusLine().getStatusCode() == 200) {
-            return true;
-        }
-
-        return false;
     }
 
 }

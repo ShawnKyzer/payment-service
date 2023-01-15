@@ -1,7 +1,7 @@
-package com.technicaltest.payment.service.jdbi3;
+package com.payment.service.jdbi3;
 
-import com.technicaltest.payment.service.jdbi3.dao.AccountsDAO;
-import com.technicaltest.payment.service.jdbi3.dao.PaymentsDAO;
+import com.payment.service.jdbi3.dao.AccountsDAO;
+import com.payment.service.jdbi3.dao.PaymentsDAO;
 import com.technicaltest.payment.service.proto.Payments.Payment;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
-package com.technicaltest.payment.service.health;
+package com.payment.service.health;
 
 import com.codahale.metrics.health.HealthCheck;
-import com.technicaltest.payment.service.PurchaseOrderConsumerConfiguration;
-import com.technicaltest.payment.service.PurchaseOrderEventConsumer;
+import com.payment.service.PurchaseOrderConsumerConfiguration;
+import com.payment.service.PurchaseOrderEventConsumer;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Environment;
 import lombok.extern.slf4j.Slf4j;

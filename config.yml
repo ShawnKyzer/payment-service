@@ -48,4 +48,4 @@ httpClient:
   maxConnectionsPerRoute: 1024
   keepAlive: 0ms
   retries: 1
-  userAgent: technical-test-payment-service
+  userAgent: payment-service
